@@ -1,0 +1,394 @@
+/* ========== RESET & BASE ========== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', 'Arial', sans-serif;
+    background: #0a0a0f;
+    color: #ffffff;
+    overflow-x: hidden;
+    line-height: 1.6;
+}
+
+/* ========== PARTICLE BACKGROUND ========== */
+.particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 20% 50%, rgba(0, 255, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 50%, rgba(255, 0, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 50% 80%, rgba(0, 255, 255, 0.05) 0%, transparent 50%);
+    z-index: -1;
+    animation: particleFloat 20s infinite linear;
+}
+
+@keyframes particleFloat {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+}
+
+/* ========== NEON TEXT EFFECT ========== */
+.neon-text {
+    color: #00ffff;
+    text-shadow: 
+        0 0 7px #00ffff,
+        0 0 10px #00ffff,
+        0 0 21px #00ffff,
+        0 0 42px #00ffff,
+        0 0 82px #00ffff,
+        0 0 92px #00ffff;
+    animation: neonPulse 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes neonPulse {
+    from { text-shadow: 0 0 7px #00ffff, 0 0 10px #00ffff, 0 0 21px #00ffff, 0 0 42px #00ffff; }
+    to { text-shadow: 0 0 5px #00ffff, 0 0 8px #00ffff, 0 0 15px #00ffff, 0 0 30px #00ffff; }
+}
+
+/* ========== HEADER ========== */
+.header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    padding: 20px 50px;
+    background: rgba(10, 10, 15, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 2px solid rgba(0, 255, 255, 0.3);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+}
+
+.logo-text {
+    font-size: 28px;
+    font-weight: bold;
+    letter-spacing: 3px;
+}
+
+.nav a {
+    color: #ffffff;
+    text-decoration: none;
+    margin-left: 30px;
+    font-size: 16px;
+    transition: all 0.3s;
+    position: relative;
+}
+
+.nav a:hover {
+    color: #00ffff;
+    text-shadow: 0 0 10px #00ffff;
+}
+
+/* ========== HERO SECTION ========== */
+.hero {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 0 20px;
+}
+
+.hero-title {
+    font-size: 64px;
+    margin-bottom: 20px;
+}
+
+.glitch {
+    position: relative;
+    color: #ffffff;
+    text-shadow: 
+        0 0 10px #00ffff,
+        0 0 20px #ff00ff;
+    animation: glitch 2s infinite;
+}
+
+@keyframes glitch {
+    0%, 100% { transform: translate(0); }
+    20% { transform: translate(-5px, 5px); }
+    40% { transform: translate(-5px, -5px); }
+    60% { transform: translate(5px, 5px); }
+    80% { transform: translate(5px, -5px); }
+}
+
+.hero-subtitle {
+    font-size: 20px;
+    color: #cccccc;
+    margin-bottom: 40px;
+}
+
+/* ========== CTA BUTTON ========== */
+.cta-button {
+    padding: 15px 40px;
+    font-size: 18px;
+    background: transparent;
+    border: 2px solid #00ffff;
+    color: #00ffff;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: all 0.3s;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    position: relative;
+    overflow: hidden;
+}
+
+.cta-button:hover {
+    background: #00ffff;
+    color: #0a0a0f;
+    box-shadow: 
+        0 0 20px #00ffff,
+        0 0 40px #00ffff,
+        0 0 80px #00ffff;
+}
+
+/* ========== GAMES GRID ========== */
+.games-section {
+    padding: 100px 50px;
+}
+
+.section-title {
+    text-align: center;
+    font-size: 42px;
+    margin-bottom: 60px;
+}
+
+.games-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.game-card {
+    background: rgba(20, 20, 30, 0.8);
+    border: 1px solid rgba(0, 255, 255, 0.2);
+    border-radius: 15px;
+    overflow: hidden;
+    transition: all 0.3s;
+    cursor: pointer;
+}
+
+.game-card:hover {
+    transform: translateY(-10px);
+    border-color: #00ffff;
+    box-shadow: 
+        0 0 20px rgba(0, 255, 255, 0.3),
+        0 0 40px rgba(0, 255, 255, 0.1);
+}
+
+.game-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+}
+
+.game-info {
+    padding: 20px;
+}
+
+.game-title {
+    font-size: 22px;
+    margin-bottom: 10px;
+    color: #00ffff;
+}
+
+.game-price {
+    font-size: 24px;
+    font-weight: bold;
+    color: #ff00ff;
+    text-shadow: 0 0 10px #ff00ff;
+    margin: 15px 0;
+}
+
+.buy-button {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(45deg, #00ffff, #ff00ff);
+    border: none;
+    border-radius: 8px;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-transform: uppercase;
+}
+
+.buy-button:hover {
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+    transform: scale(1.05);
+}
+
+/* ========== REVIEWS SECTION ========== */
+.reviews-section {
+    padding: 100px 50px;
+    background: rgba(10, 10, 20, 0.5);
+}
+
+.rating-summary {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.rating-score span {
+    font-size: 48px;
+    font-weight: bold;
+    color: #00ffff;
+    text-shadow: 0 0 20px #00ffff;
+}
+
+.rating-score .stars {
+    font-size: 30px;
+}
+
+.review-form {
+    max-width: 600px;
+    margin: 0 auto 50px;
+    padding: 30px;
+    background: rgba(20, 20, 30, 0.8);
+    border: 1px solid rgba(0, 255, 255, 0.3);
+    border-radius: 15px;
+}
+
+.review-form h3 {
+    color: #00ffff;
+    margin-bottom: 20px;
+}
+
+.star-rating {
+    margin: 20px 0;
+    cursor: pointer;
+}
+
+.star-rating span {
+    font-size: 30px;
+    margin: 0 5px;
+    transition: all 0.2s;
+    filter: grayscale(100%);
+}
+
+.star-rating span.active {
+    filter: grayscale(0%);
+    text-shadow: 0 0 10px #ffd700;
+}
+
+#reviewerName, #reviewText {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(0, 255, 255, 0.3);
+    border-radius: 8px;
+    color: #ffffff;
+    font-size: 14px;
+}
+
+.submit-review {
+    width: 100%;
+    padding: 12px;
+    background: #00ffff;
+    color: #0a0a0f;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.submit-review:hover {
+    box-shadow: 0 0 20px #00ffff;
+}
+
+.reviews-list {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.review-card {
+    background: rgba(30, 30, 40, 0.6);
+    border-left: 3px solid #00ffff;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 0 10px 10px 0;
+    transition: all 0.3s;
+}
+
+.review-card:hover {
+    border-left-color: #ff00ff;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.review-name {
+    color: #00ffff;
+    font-weight: bold;
+}
+
+.review-stars {
+    color: #ffd700;
+}
+
+.review-text {
+    color: #cccccc;
+    font-style: italic;
+}
+
+.review-date {
+    color: #666;
+    font-size: 12px;
+    margin-top: 10px;
+}
+
+/* ========== FOOTER ========== */
+.footer {
+    text-align: center;
+    padding: 30px;
+    background: rgba(10, 10, 15, 0.95);
+    border-top: 2px solid rgba(0, 255, 255, 0.3);
+}
+
+.footer a {
+    color: #00ffff;
+    text-decoration: none;
+}
+
+/* ========== LOADING ========== */
+.loading {
+    text-align: center;
+    color: #00ffff;
+    font-size: 20px;
+    padding: 50px;
+    animation: neonPulse 1.5s infinite;
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 768px) {
+    .hero-title { font-size: 36px; }
+    .header { padding: 15px 20px; }
+    .nav a { margin-left: 15px; font-size: 14px; }
+    .games-grid { grid-template-columns: 1fr; }
+    .section-title { font-size: 28px; }
+}
+
+@media (max-width: 480px) {
+    .hero-title { font-size: 28px; }
+    .hero-subtitle { font-size: 16px; }
+    .cta-button { padding: 12px 30px; font-size: 14px; }
+}

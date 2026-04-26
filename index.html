@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gaming Store - Soft File PC Games</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+</head>
+<body>
+    <!-- PARTICLE BACKGROUND -->
+    <div class="particles"></div>
+    
+    <!-- HEADER -->
+    <header class="header">
+        <div class="logo">
+            <span class="logo-text">🎮 GAME<span class="neon-text">STORE</span></span>
+        </div>
+        <nav class="nav">
+            <a href="#games">Games</a>
+            <a href="#reviews">Reviews</a>
+            <a href="#about">About</a>
+        </nav>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <h1 class="hero-title">
+            <span class="glitch" data-text="PREMIUM PC GAMES">PREMIUM PC GAMES</span>
+        </h1>
+        <p class="hero-subtitle">Soft File Original • Instant Delivery • Best Price</p>
+        <button class="cta-button" onclick="scrollToGames()">
+            🔥 EXPLORE GAMES
+        </button>
+        <div class="scroll-indicator">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </section>
+
+    <!-- GAMES SECTION -->
+    <section id="games" class="games-section">
+        <h2 class="section-title">🎯 AVAILABLE <span class="neon-text">GAMES</span></h2>
+        <div id="gamesContainer" class="games-grid">
+            <!-- Games akan di-load dari Firebase -->
+            <div class="loading">Loading games...</div>
+        </div>
+    </section>
+
+    <!-- REVIEWS SECTION -->
+    <section id="reviews" class="reviews-section">
+        <h2 class="section-title">💬 PLAYER <span class="neon-text">REVIEWS</span></h2>
+        
+        <!-- Rating Summary -->
+        <div class="rating-summary">
+            <div class="rating-score">
+                <span id="averageRating">0.0</span>
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <p>from <span id="totalReviews">0</span> reviews</p>
+            </div>
+        </div>
+
+        <!-- Add Review Form -->
+        <div class="review-form">
+            <h3>Leave Anonymous Review</h3>
+            <div class="star-rating">
+                <span data-rating="1">⭐</span>
+                <span data-rating="2">⭐</span>
+                <span data-rating="3">⭐</span>
+                <span data-rating="4">⭐</span>
+                <span data-rating="5">⭐</span>
+            </div>
+            <input type="text" id="reviewerName" placeholder="Anonymous Nickname (optional)" maxlength="30">
+            <textarea id="reviewText" placeholder="Your review..." maxlength="300" rows="3"></textarea>
+            <button onclick="submitReview()" class="submit-review">Post Review</button>
+        </div>
+
+        <!-- Reviews List -->
+        <div id="reviewsContainer" class="reviews-list">
+            <!-- Reviews akan di-load dari Firebase -->
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <p>© 2024 GameStore - Trusted PC Game Seller</p>
+        <p>Contact: <a href="https://wa.me/6285785202302" target="_blank">+62 857-8520-2302</a></p>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>

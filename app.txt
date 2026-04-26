@@ -1,0 +1,218 @@
+// ========== FIREBASE CONFIG ==========
+const firebaseConfig = {
+    apiKey: "AIzaSyDsshK8QGBxWZjXb1gpX9KsjyeZZopqQFQ",
+    authDomain: "gamestore-ee3ce.firebaseapp.com",
+    projectId: "gamestore-ee3ce",
+    storageBucket: "gamestore-ee3ce.firebasestorage.app",
+    messagingSenderId: "978012422724",
+    appId: "1:978012422724:web:55a25b657e3fc7478bb211"
+};
+
+// Inisialisasi Firebase
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+// ========== VARIABEL GLOBAL ==========
+let selectedRating = 0;
+const WA_NUMBER = "6285785202302";
+
+// ========== STAR RATING SYSTEM ==========
+document.addEventListener('DOMContentLoaded', function() {
+    // Setup star rating
+    const stars = document.querySelectorAll('.star-rating span');
+    if (stars.length > 0) {
+        stars.forEach(star => {
+            star.addEventListener('click', function() {
+                selectedRating = parseInt(this.dataset.rating);
+                updateStarDisplay();
+            });
+            
+            star.addEventListener('mouseover', function() {
+                const rating = parseInt(this.dataset.rating);
+                highlightStars(rating);
+            });
+            
+            star.addEventListener('mouseout', function() {
+                highlightStars(selectedRating);
+            });
+        });
+    }
+    
+    // Load data
+    loadGames();
+    loadReviews();
+});
+
+function highlightStars(rating) {
+    document.querySelectorAll('.star-rating span').forEach(star => {
+        if (parseInt(star.dataset.rating) <= rating) {
+            star.classList.add('active');
+        } else {
+            star.classList.remove('active');
+        }
+    });
+}
+
+function updateStarDisplay() {
+    highlightStars(selectedRating);
+}
+
+// ========== LOAD GAMES ==========
+function loadGames() {
+    const container = document.getElementById('gamesContainer');
+    if (!container) return;
+    
+    container.innerHTML = '<div class="loading">Loading games...</div>';
+    
+    db.collection('games').orderBy('createdAt', 'desc').onSnapshot((snapshot) => {
+        if (snapshot.empty) {
+            container.innerHTML = '<div class="loading">No games available yet. 🎮</div>';
+            return;
+        }
+        
+        container.innerHTML = '';
+        snapshot.forEach((doc) => {
+            const game = doc.data();
+            const gameCard = createGameCard(doc.id, game);
+            container.appendChild(gameCard);
+        });
+    }, (error) => {
+        console.error("Error loading games:", error);
+        container.innerHTML = '<div class="loading">Error loading games. Check connection.</div>';
+    });
+}
+
+function createGameCard(id, game) {
+    const card = document.createElement('div');
+    card.className = 'game-card';
+    card.innerHTML = `
+        <img src="${game.imageUrl}" alt="${game.title}" class="game-image" onerror="this.src='https://via.placeholder.com/300x200/0a0a0f/00ffff?text=No+Image'">
+        <div class="game-info">
+            <h3 class="game-title">${game.title}</h3>
+            <p class="game-price">Rp ${parseInt(game.price).toLocaleString('id-ID')}</p>
+            <button class="buy-button" onclick="buyGame('${game.title.replace(/'/g, "\\'")}', ${game.price})">
+                🛒 BUY VIA WHATSAPP
+            </button>
+        </div>
+    `;
+    return card;
+}
+
+// ========== BUY GAME FUNCTION ==========
+function buyGame(gameTitle, price) {
+    const message = `Halo, saya tertarik untuk membeli game:%0A%0A🎮 *${gameTitle}*%0A💰 Harga: Rp ${parseInt(price).toLocaleString('id-ID')}%0A%0AApakah tersedia?`;
+    const waUrl = `https://wa.me/${WA_NUMBER}?text=${message}`;
+    window.open(waUrl, '_blank');
+}
+
+// ========== LOAD REVIEWS ==========
+function loadReviews() {
+    const container = document.getElementById('reviewsContainer');
+    if (!container) return;
+    
+    db.collection('reviews').orderBy('createdAt', 'desc').onSnapshot((snapshot) => {
+        container.innerHTML = '';
+        let totalRating = 0;
+        let count = snapshot.size;
+        
+        if (snapshot.empty) {
+            container.innerHTML = '<div class="loading">Belum ada review. Jadilah yang pertama! ⭐</div>';
+        } else {
+            snapshot.forEach((doc) => {
+                const review = doc.data();
+                totalRating += review.rating || 0;
+                const reviewCard = createReviewCard(doc.id, review);
+                container.appendChild(reviewCard);
+            });
+        }
+        
+        updateRatingSummary(totalRating, count);
+    }, (error) => {
+        console.error("Error loading reviews:", error);
+        container.innerHTML = '<div class="loading">Error loading reviews.</div>';
+    });
+}
+
+function createReviewCard(id, review) {
+    const card = document.createElement('div');
+    card.className = 'review-card';
+    
+    const starsHTML = '⭐'.repeat(review.rating || 0);
+    const date = review.createdAt ? new Date(review.createdAt.toDate()).toLocaleDateString('id-ID', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+    }) : 'New';
+    
+    card.innerHTML = `
+        <div class="review-header">
+            <span class="review-name">${review.name || 'Anonymous'}</span>
+            <span class="review-stars">${starsHTML}</span>
+        </div>
+        <p class="review-text">"${review.text}"</p>
+        <p class="review-date">${date}</p>
+    `;
+    return card;
+}
+
+function updateRatingSummary(totalRating, count) {
+    const avgEl = document.getElementById('averageRating');
+    const totalEl = document.getElementById('totalReviews');
+    
+    if (avgEl) {
+        const avg = count > 0 ? (totalRating / count).toFixed(1) : '0.0';
+        avgEl.textContent = avg;
+    }
+    if (totalEl) {
+        totalEl.textContent = count;
+    }
+}
+
+// ========== SUBMIT REVIEW ==========
+async function submitReview() {
+    const nameEl = document.getElementById('reviewerName');
+    const textEl = document.getElementById('reviewText');
+    
+    if (!nameEl || !textEl) return;
+    
+    const name = nameEl.value.trim();
+    const text = textEl.value.trim();
+    
+    if (selectedRating === 0) {
+        alert('Please select a star rating! ⭐');
+        return;
+    }
+    
+    if (!text) {
+        alert('Please write your review! 📝');
+        return;
+    }
+    
+    try {
+        await db.collection('reviews').add({
+            name: name || 'Anonymous',
+            text: text,
+            rating: selectedRating,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        
+        // Reset form
+        nameEl.value = '';
+        textEl.value = '';
+        selectedRating = 0;
+        updateStarDisplay();
+        
+        alert('Review posted successfully! Thank you 🙏');
+    } catch (error) {
+        console.error("Error submitting review:", error);
+        alert('Failed to post review. Please try again.');
+    }
+}
+
+// ========== UTILITY FUNCTIONS ==========
+function scrollToGames() {
+    const gamesSection = document.getElementById('games');
+    if (gamesSection) {
+        gamesSection.scrollIntoView({ behavior: 'smooth' });
+    }
+}
